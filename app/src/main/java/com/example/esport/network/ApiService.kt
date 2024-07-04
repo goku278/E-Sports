@@ -31,12 +31,6 @@ interface ApiService {
         @Body request: BookSlotRequest
     ): Call<BookSlotRequestResponse>
 
-    /*@DELETE("vendor/venue/v1/cancelbooking")
-    fun cancelBooking(
-        @Query("id") id: Int,
-        @Header("X-API-Key") apiKey: String
-    ): Call<DeleteResponse>*/
-
     @DELETE("vendor/venue/v1/cancelbooking")
     fun cancelBooking(
         @Header("X-API-Key") apiKey: String,

@@ -1,6 +1,7 @@
 package com.example.esport.ui.home
 
 import android.app.Application
+import android.app.DatePickerDialog
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -20,6 +21,8 @@ import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Calendar
+import java.util.Locale
 import javax.inject.Inject
 
 class ESportsViewModel @Inject constructor(
@@ -28,6 +31,8 @@ class ESportsViewModel @Inject constructor(
 
     @Inject
     lateinit var apiService: ApiService
+
+    private lateinit var selectedDate: String
 
     private val _turfList = MutableLiveData<TurfList?>()
     val turfs: MutableLiveData<TurfList?> = _turfList
@@ -83,8 +88,6 @@ class ESportsViewModel @Inject constructor(
                 slotResponse.turfId!!
             )
         }
-
-        // Log request details
         Log.d(
             "MainActivity",
             "Request URL: http://43.205.87.112:8080/vendor/venue/v1/cancelbooking?id=11"
@@ -107,7 +110,11 @@ class ESportsViewModel @Inject constructor(
                         Log.e("MainActivity", "Failed to retrieve response: Response body is null")
                     }
                 } else {
-                    Toast.makeText(getApplication(), "${response.raw().message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        getApplication(),
+                        "${response.raw().message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     Log.e(
                         "MainActivity",
                         "Failed to retrieve response: ${response.errorBody()?.string()}"
@@ -166,40 +173,42 @@ class ESportsViewModel @Inject constructor(
         })
     }
 
-    /* fun cancelBooking() {
-         val call = apiService.fetchAllTurfs(Constant.apiKey)  // Correct method name here
-         call.enqueue(object : Callback<TurfList> {
-             override fun onResponse(call: Call<TurfList>, response: Response<TurfList>) {
-                 if (response.isSuccessful) {
-                     val turfs = response.body()
-                     turfs?.let {
-                         // Log the response
-                         Log.d("MainActivity", "Turfs: ${Gson().toJson(turfs)}")
-                         // Post value to LiveData
-                         _turfList.postValue(turfs)
-                     } ?: run {
-                         Log.e("MainActivity", "Failed to retrieve turfs: Response body is null")
-                     }
-                 } else {
-                     Log.e(
-                         "MainActivity",
-                         "Failed to retrieve turfs: ${response.errorBody()?.string()}"
-                     )
-                 }
-             }
-
-             override fun onFailure(call: Call<TurfList>, t: Throwable) {
-                 Log.e("MainActivity", "Error fetching turfs", t)
-             }
-         })
-     }*/
-
-    fun fetchAllSlotBookingTimings(turfs: Turfs) {
+    fun fetchDateFromUser(context: Context, turfs: Turfs) {
         val turfId = turfs.id ?: return // Ensure turfs.id is not null
 
+        // Show a DatePickerDialog to get user input for the date
+        val calendar = Calendar.getInstance()
+        val initialYear = calendar.get(Calendar.YEAR)
+        val initialMonth = calendar.get(Calendar.MONTH)
+        val initialDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            context, // Use activity context
+            { _, year, month, day ->
+                // Format the selected date as yyyy-MM-dd
+                selectedDate = String.format(Locale.US, "%04d-%02d-%02d", year, month + 1, day)
+
+                if (selectedDate != null) {
+                    fetchAllSlotBookingTimings(context, turfs)
+                }
+                // Fetch slots using the selected date
+                // fetchSlotsByDate(turfId, selectedDate)
+            },
+            initialYear,
+            initialMonth,
+            initialDay
+        )
+
+        // Show the date picker dialog
+        datePickerDialog.show()
+    }
+
+    private fun fetchAllSlotBookingTimings(context: Context, turfs: Turfs) {
+        val turfId = turfs.id ?: (return) // Ensure turfs.id is not null
+//        fetchDateFromUser(context, turfs)
         val call = apiService.fetchRelevantSlotsByTurfIdAndDate(
             turfId,
-            "2024-07-10",
+            selectedDate,
             Constant.apiKey
         )
 
@@ -228,5 +237,4 @@ class ESportsViewModel @Inject constructor(
             }
         })
     }
-
 }

@@ -22,7 +22,7 @@ import com.example.esport.model.SlotResponse
 import com.example.esport.model.Turfs
 import com.example.esport.util.SharedPreferencesHelper
 
-class TurfFragment(
+data class TurfFragment(
     private val turfs: List<Response>,
     private val context: Context,
     private val viewModel: ESportsViewModel,
@@ -116,6 +116,7 @@ class TurfFragment(
         ) { slotResponse ->
             initializeRecyclerView(view2, "", null, slotResponse?.response, turfs.id)
         }
-        viewModel.fetchAllSlotBookingTimings(turfs)
+//        viewModel.fetchAllSlotBookingTimings(context,turfs)
+        viewModel.fetchDateFromUser(context, turfs)
     }
 }
