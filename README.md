@@ -1,12 +1,2 @@
-# E-Sports
-
-A sample UI/UX oriented android application, to demonstrate the usages of android sdks, apis integration for android application development.
-
-Key features.
-
-1. Rest api integration, api parsing
-2. XML UI designs
-3. MVVM architecture
-4. RxJava
-5. Dagger-Hilt
-6. Kotlin code.
+# NasaImaeOfTheDay
+Android application made using mvvm, dagger2 dependency injection and retrofit library to call a GET request to the NASA's image server, to fetch and display the NASA's image of the day picture in an android application.

@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/black"
+        android:elevation="4dp">
+
+        <!-- Left icon (back button) -->
+        <ImageView
+            android:id="@+id/toolbar_back"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_gravity="start"
+            android:visibility="gone"
+            android:layout_marginEnd="25dp"
+            android:src="@drawable/back"
+            android:contentDescription="back" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Screen Name"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- Right container for notification icon and badge -->
+        <RelativeLayout
+            android:id="@+id/rlNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/toolbar_notification_icon"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:src="@drawable/bell"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="notification" />
+
+            <TextView
+                android:id="@+id/tvNotificationCount"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:visibility="gone"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:layout_marginStart="12dp"
+                android:text="0"
+                android:background="@drawable/dot" />
+
+           <!-- <com.nex3z.notificationbadge.NotificationBadge
+                android:id="@+id/badge_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/toolbar_notification_icon"
+                android:layout_alignEnd="@id/toolbar_notification_icon"
+                android:layout_marginTop="-2dp"
+                android:layout_marginEnd="-10dp"
+                app:nbAnimationEnabled="true"
+                app:nbAnimationDuration="1000"
+                app:nbBackground="@drawable/dot"
+                app:nbMaxTextLength="3" />-->
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- Your content here -->
+
+</RelativeLayout>
